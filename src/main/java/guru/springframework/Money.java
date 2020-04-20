@@ -26,8 +26,11 @@ public class Money implements Expression {
         return new Money(amount * multiplier, currency);
     }
 
-    public Money reduce(String toCurrency) {
-        return this;
+    @Override
+    public Money reduce(Bank bank, String toCurrency) {
+        int rate = bank.rate(this.currency, toCurrency);
+
+        return new Money(amount / rate, toCurrency);
     }
 
     public Expression plus(Money addend) {
@@ -35,9 +38,11 @@ public class Money implements Expression {
     }
 
     public boolean equals(Object object) {
-        Money money = (Money) object;
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
 
+        Money money = (Money) object;
         return amount == money.amount
-                && currency == money.currency;
+                && currency.equals(money.currency);
     }
 }
