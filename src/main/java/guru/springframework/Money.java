@@ -25,14 +25,17 @@ public class Money implements Expression {
         return new Money(amount / rate, toCurrency);
     }
 
+    @Override
     public Expression plus(Expression addend) {
         return new Sum(this, addend);
     }
 
-    public Money times(int multiplier) {
+    @Override
+    public Expression times(int multiplier) {
         return new Money(amount * multiplier, currency);
     }
 
+    @Override
     public boolean equals(Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
@@ -40,6 +43,14 @@ public class Money implements Expression {
         Money money = (Money) object;
         return amount == money.amount
                 && currency.equals(money.currency);
+    }
+
+    @Override
+    public String toString() {
+        return "Money{" +
+                "amount=" + amount +
+                ", currency='" + currency +
+                "'}";
     }
 
     protected String currency() {
